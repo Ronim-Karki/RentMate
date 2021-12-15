@@ -1,5 +1,7 @@
 import SignUp from '../Components/SignUp';
 import Home from '../Components/Home';
+import HomeMenu from '../Components/HomeMenu';
+import Input from '../Components/Input';
 
 const Navigator = createNativeStackNavigator(
   {
@@ -8,6 +10,12 @@ const Navigator = createNativeStackNavigator(
     },
     SignUpForm: {
       screen: SignUp,
+    },
+    Input: {
+      screen: Input,
+    },
+    HomeMenu: {
+      screen: HomeMenu,
     },
   },
   {

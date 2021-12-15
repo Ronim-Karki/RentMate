@@ -1,5 +1,16 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
+//import SQLite from 'react-native-sqlite-storage';
+// const db = -SQLite.openDatabase(
+//   {
+//     name: 'MainDB',
+//     location: 'default',
+//   },
+//   () => {},
+//   (error) => {
+//     console.log(error);
+//   }
+// );
 import {
   StyleSheet,
   Pressable,
@@ -13,6 +24,13 @@ import {
   ScrollView,
 } from 'react-native';
 import Input from './Input';
+
+// const createTable = () => {
+//   db.transaction((tx) => {
+//     tx.executeSql(
+//       'CREATE TABLE IF NOT EXISTS Registration (id INTEGER PRIMARY KEY NOT NULL, title TEXT NOT NULL, imageUri TEXT NOT NULL)'
+//     );
+//   });
 
 const Home = ({ navigation }) => {
   return (
@@ -38,9 +56,7 @@ const Home = ({ navigation }) => {
         </Text>
         <Image style={styles.logo} source={require('../Image/Logo.png')} />
         <Input />
-        <View style={styles.button}>
-          <Button title="Sign In" />
-        </View>
+
         <View
           style={{
             marginTop: 25,

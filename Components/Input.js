@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import * as SQLite from 'expo-sqlite';
 import {
   View,
   TextInput,
@@ -8,32 +8,51 @@ import {
   Keyboard,
   Button,
 } from 'react-native';
-// import { auth } from '../user/firebase.js';
-import { fetchdata } from '../user/db';
-import 'react-native-gesture-handler';
+
+let db;
 const Input = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  // const handleSignIn = () => {
-  //   auth
-  //     .createUserWithEmailAndPassword(userName, password)
-  //     .then((userCredentials) => {
-  //       const user = userCredentials.user;
-  //       console.log(user.userName);
-  //     })
-  //     .catch((error) => alert(error.message));
+
+  useEffect(() => {
+    db = SQLite.openDatabase('MainDB.db');
+  });
 
   const handleSignIn = () => {
-    // if (!userName) {
-    //   alert('Please Insert Username');
-    // }
-    // if (!password) {
-    //   alert('Please Insert Password');
-    // } else {
-    //   const checkData = fetchdata(userName, password);
-
-    navigation.navigate('SignUp');
-    // }
+    if (!userName) {
+      alert('Please Insert Username');
+    }
+    if (!password) {
+      alert('Please Insert Password');
+    }
+    const promise = new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          `SELECT * FROM RegisterUser WHERE userName="${userName}"`,
+          [],
+          (_, result) => {
+            resolve(result);
+            const len = result.rows.length;
+            console.log(result);
+            if (!len) {
+              alert('This account does not exist');
+            } else {
+              const row = result.rows.item(0);
+              if (password === row.password) {
+                console.log('sign in sucessful');
+                navigation.navigate('Tab');
+                return;
+              }
+              alert('Authentication failed!');
+            }
+          },
+          (_, err) => {
+            reject(err);
+          }
+        );
+      });
+      return promise;
+    });
   };
 
   // };

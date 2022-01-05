@@ -1,6 +1,6 @@
 import SignUp from '../Components/SignUp';
 import Home from '../Components/Home';
-import HomeMenu from '../Components/HomeMenu';
+import HomeMenu from '../TabScreens/HomeMenu';
 import Input from '../Components/Input';
 
 const Navigator = createNativeStackNavigator(

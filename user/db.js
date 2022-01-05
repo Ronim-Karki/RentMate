@@ -1,7 +1,7 @@
 import React from 'react';
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase(
+let db = SQLite.openDatabase(
   'MainDB.db'
   // {
   //   name: 'MainDB.db',
@@ -83,6 +83,25 @@ export const insert = (
   //     });
   //   });
 };
+export const seetable = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM RegisterUser`,
+        [],
+        (_, result) => {
+          resolve(result);
+          console.log(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+    return promise;
+  });
+};
+
 export const fetchdata = (userName, password) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -91,6 +110,14 @@ export const fetchdata = (userName, password) => {
         [],
         (_, result) => {
           resolve(result);
+          const len = result.rows.length;
+          if (!len) {
+            alert('This account does not exist');
+          } else {
+            const row = result.rows.item(0);
+            if (password === row.password) {
+            }
+          }
           if (result.userName === result.password) {
             alert('successful');
           } else {
